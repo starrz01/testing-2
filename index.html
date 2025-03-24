@@ -1,0 +1,75 @@
+Here’s your modified code with the **VR button removed** and improved video settings:
+
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>AR Video</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <script src="https://cdn.jsdelivr.net/npm/aframe@1.2.0/dist/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.min.js"></script>
+  </head>
+
+  <body style="margin: 0; overflow: hidden;">
+
+    <!-- 🚀 Start Button -->
+    <button onclick="startAR()" style="position:absolute; z-index:999; top:10px; left:10px; padding:10px; font-size:16px;">
+      Start AR
+    </button>
+
+    <!-- 🎥 AR Scene (VR UI Disabled) -->
+    <a-scene embedded arjs vr-mode-ui="enabled: false" id="scene" style="display:none;">
+
+      <!-- Preload Assets -->
+      <a-assets>
+        <video id="videoAsset" src="video.mp4" preload="auto" autoplay loop muted playsinline crossorigin="anonymous"></video>
+      </a-assets>
+
+      <!-- Marker -->
+      <a-marker type="pattern" url="marker.patt" id="marker">
+        <a-video 
+          src="#videoAsset"
+          width="2"
+          height="1"
+          position="0 0 0"
+          muted
+          playsinline
+        ></a-video>
+      </a-marker>
+
+      <!-- Camera -->
+      <a-entity camera></a-entity>
+    </a-scene>
+
+    <!-- 🟢 Script -->
+    <script>
+      function startAR(){
+        document.getElementById('scene').style.display = 'block';
+        document.querySelector('button').style.display = 'none';
+
+        let marker = document.querySelector('#marker');
+        let videoEl = document.querySelector('#videoAsset');
+
+        marker.addEventListener('markerFound', () => {
+          console.log('Marker Found');
+          videoEl.play();
+        });
+
+        marker.addEventListener('markerLost', () => {
+          console.log('Marker Lost');
+          videoEl.pause();
+        });
+      }
+    </script>
+
+  </body>
+</html>
+```
+
+**Key changes:**
+- Added `vr-mode-ui="enabled: false"` to hide the VR button.
+- Set `autoplay`, `loop`, `muted`, and `playsinline` properly to comply with browser autoplay policies.
+
+Upload this corrected file to GitHub, replacing the old one, and you’re good to go! 🎯
+
+Would you like me to guide you on re-uploading it to GitHub?
