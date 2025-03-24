@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>AR.js Video Marker</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.min.js"></script>
+    <style>
+      body { margin: 0; overflow: hidden; }
+      video { display: none; }
+    </style>
+  </head>
+
+  <body>
+    <!-- Start Button -->
+    <button onclick="startAR()" style="position:absolute; z-index:999; top:10px; left:10px; padding:10px; font-size:16px;">
+      Start AR
+    </button>
+
+    <!-- AR Scene -->
+    <a-scene embedded arjs vr-mode-ui="enabled: false" id="scene" style="display:none;">
+      
+      <!-- Preload Video -->
+      <a-assets>
+        <video id="videoAsset" src="video.mp4" preload="auto" loop muted playsinline crossorigin="anonymous"></video>
+      </a-assets>
+
+      <!-- Marker -->
+      <a-marker type="pattern" url="marker.patt" id="marker">
+        <a-video
+          src="#videoAsset"
+          width="2"
+          height="1"
+          position="0 0 0"
+          muted
+          playsinline
+        ></a-video>
+      </a-marker>
+
+      <!-- Camera -->
+      <a-entity camera></a-entity>
+    </a-scene>
+
+    <!-- Script -->
+    <script>
+      function startAR(){
+        // Show Scene
+        document.getElementById('scene').style.display = 'block';
+        // Hide Button
+        document.querySelector('button').style.display = 'none';
+
+        // Play/Pause Logic
+        let marker = document.querySelector('#marker');
+        let videoEl = document.querySelector('#videoAsset');
+
+        marker.addEventListener('markerFound', () => {
+          console.log('Marker Found');
+          videoEl.play();
+        });
+
+        marker.addEventListener('markerLost', () => {
+          console.log('Marker Lost');
+          videoEl.pause();
+        });
+      }
+    </script>
+
+  </body>
+</html>
